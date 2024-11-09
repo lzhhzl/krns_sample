@@ -1,0 +1,53 @@
+// startup.tjs - スタートアップスクリプト
+// Copyright (C) 2001, W.Dee  改変・配布は自由です
+
+// ※このスクリプトは未パック向け（デバッグ作業用）の data/startup.tjs スクリプトです
+// （パック時は tools/engine/startup_packed.tjs のスクリプトが使用されます）
+
+// 吉里吉里Z判定
+var kirikiriz = false @if (kirikiriz) |true @endif;
+
+// ツールのパスを返す(起動環境によって異なるのでここで定義)
+function getToolsPath(path) { return @"${System.exePath}tools/${path}"; }
+
+// デバッグモード判定
+("property debugWindowEnabled { getter() { return " + (System.getArgument("-debugwin") != "no") + "; } }")!;
+
+// パック済み判定（パック時に使用されるかもしれないので一応念のため）
+("property inXP3archivePacked { getter() { return " + (function {
+	var path = getPlacedPath("startup.tjs"), r = false;
+	if (path.indexOf(">") < 0) try { r = (getLocalName(path) != ""); } catch {}
+	return !r;
+} incontextof Storages)() + "; } }")!;
+Scripts.exec(@"@set (PACKED=${inXP3archivePacked})@set(DEBUG=${debugWindowEnabled})");
+
+// 開発モード判定
+var developMode = (System.getArgument("-debugwin") != "no" &&
+				   Storages.isExistentStorage(@"${System.exePath}develop.txt") &&
+				   Storages.isExistentStorage(getToolsPath("engine/system/Initialize.tjs"))) || !Storages.isExistentStorage("system/Initialize.tjs");
+
+// コンバートモード判定
+var convertMode = false;
+if (debugWindowEnabled) {
+	var convs = [
+		"-convert"     => "convertMain.tjs",
+		"-convertpack" => "convertPackMain.tjs",
+		"-convertui"   => "convertUIMain.tjs",
+		];
+	for (var i = 0; i < convs.count; i+=2) {
+		var arg = convs[i], script = convs[i+1];
+		if (arg != "" && System.getArgument(arg) == "yes") {
+			convertMode = [ script ]; // [NOTE] object as true in condition
+			break;
+		}
+	}
+}
+
+// このスクリプトは一番最初に実行されるスクリプトです
+if (developMode) {
+	Scripts.execStorage(getToolsPath("engine/system/Initialize.tjs")); // tools/engine/system/Initialize.tjs を実行
+} else {
+	Scripts.execStorage("system/Initialize.tjs"); // system/Initialize.tjs を実行
+}
+
+if (convertMode instanceof "Array") Scripts.execStorage(convertMode[0]);

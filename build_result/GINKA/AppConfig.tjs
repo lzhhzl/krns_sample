@@ -1,0 +1,14 @@
+// 環境情報用変数
+with (typeof global.ENV_context == "Object" ? global.ENV_context : global) {
+	.ENV_Maker     = "Frontwing";
+	.ENV_MakerURL  = "http://frontwing.jp";
+	.ENV_GameName  = "GINKA";
+	.ENV_GameURL   = "http://frontwing.jp";
+	.ENV_GameId    = "{FA91F833-1DA2-40C0-A32C-AE23333AFC61}";
+	.ENV_ReadmeFile= "readme.txt";
+	.ENV_ReadmeName= "Open Readme File";
+	.ENV_IconFile  = "setup/vol1/game.ico";
+	.ENV_PKeyName  = "";
+}
+// ※このファイルは直接編集しないでください
+// （元となる MakeConfig.txt を編集して MakeMenuから直makeの「gameconfig」で更新）

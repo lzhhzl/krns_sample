@@ -1,0 +1,14 @@
+// 環境情報用変数
+with (typeof global.ENV_context == "Object" ? global.ENV_context : global) {
+	.ENV_Maker     = "Laplacian";
+	.ENV_MakerURL  = "http://www.ほげほげ.com";
+	.ENV_GameName  = "白昼夢の青写真";
+	.ENV_GameURL   = "http://www.ほげほげ.com/ゲーム";
+	.ENV_GameId    = "{955BB898-16E9-46E8-9BC5-CF0A54AADED0}";
+	.ENV_ReadmeFile= "readme.txt";
+	.ENV_ReadmeName= "お読みください";
+	.ENV_IconFile  = "setup/game.ico";
+	.ENV_PKeyName  = "";
+}
+// ※このファイルは直接編集しないでください
+// （元となる MakeConfig.txt を編集して MakeMenuから直makeの「gameconfig」で更新）

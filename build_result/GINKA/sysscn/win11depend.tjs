@@ -1,0 +1,128 @@
+// win11depend.tjs
+/* 由于不知道传入参数和内置参数的名称，这里临时用
+var_arg和in_var命名来临时代表这传入参数和内置参数*/
+
+function UpdateWindowCornerPreferenceMenu(var_arg1,var_arg2) {
+	if(var_arg1===void)
+	{
+		var_arg1=kag.scflags.WindowCornerPreference;
+	}
+
+	if(var_arg2===void)
+	{
+		var_arg2=SystemConfig.WindowCornerPreferenceMenu;
+	}
+
+	var_arg1 = (int)+var_arg1;
+
+	if(var_arg2)
+	{
+		for(var i=0;i<var_arg2.count;i++)
+		{
+			var in_var1 = var_arg2[i];
+			if(in_var1 && (in_var1.value!==void))
+			{
+				in_var1.checked=(var_arg1==in_var1.value);
+			}
+		}
+	}
+}
+
+{
+var v0 = "wincorner";
+SystemConfig.WindowCornerPreferenceMenu = [
+	%["name"=>"Win11CornerShapeDefaultMenuItem", "caption"=>"", "func"=>v0, "group"=>1, "value"=>0],
+	%["caption"=>"-"],
+	%["name"=>"Win11CornerShapeDoNotRoundMenuItem", "caption"=>"", "func"=>v0, "group"=>1, "value"=>1],
+	%["name"=>"Win11CornerShapeRoundMenuItem", "caption"=>"", "func"=>v0, "group"=>1, "value"=>2],
+	%["name"=>"Win11CornerShapeSmallRoundMenuItem", "caption"=>"", "func"=>v0, "group"=>1, "value"=>3]
+];
+}
+
+if(typeof Window.setWindowCornerPreference=="Object"){
+	addKagHookCallback(
+		"onSetExSystemMenu",
+		function (var_arg1){
+			var in_var1 = SystemConfig.WindowCornerPreferenceMenu;
+			var i=0;
+			var in_var2 = in_var1.count;
+			for(;i<in_var2;i++)
+			{
+				var in_var3 = in_var1[i];
+				if(in_var3==="-")
+				{
+					in_var1[i]=%["caption"=>"-"];
+				}
+				else
+				{
+					if(in_var3)
+					{
+						with(in_var3)
+						{
+							if(.name!="")
+								._origCaption = (string).caption;
+						}
+					}
+					else
+					{
+						in_var1[i]=void;
+					}
+				}
+			}
+			in_var1.remove(void,true);
+			var_arg1.push(%["caption"=>"", "name"=>"Win11CornerShapeMenu", "children"=> in_var1]);
+		},
+		0
+	);
+
+	addKagHookCallback(
+		"onResetAllMenuLangText",
+		function {
+			var in_var1 = SystemConfig.WindowCornerPreferenceMenu;
+			var i = 0;
+			var in_var2 = in_var1.count;
+			for(;i<in_var2;i++)
+			{
+				with (in_var1[i])
+				{
+					if (.name!="")
+						.caption = GetSystemLangMessage(.name,._origCaption);
+				}
+			}
+		},
+		0
+	);
+
+	addKagHookCallback(
+		"onClickExSystemMenu",
+		function (var_arg1){
+			if(var_arg1){
+				if(var_arg1.func=="wincorner")
+				{
+					var in_var1 = var_arg1.value;
+					scflags.WindowCornerPreference = in_var1;
+					UpdateWindowCornerPreferenceMenu(in_var1);
+					try
+					{
+						this.setWindowCornerPreference(in_var1);
+					}
+					catch{}
+					saveSystemVariables();
+				}
+			}
+		},
+		1
+	);
+
+	addAfterInitCallback(
+		function {
+			var in_var1 = (int)+kag.scflags.WindowCornerPreference;
+			UpdateWindowCornerPreferenceMenu(in_var1);
+			try
+			{
+				kag.setWindowCornerPreference(in_var1);
+			}
+			catch{}
+		}
+	);
+}
