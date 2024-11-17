@@ -1,6 +1,17 @@
 // win11depend.tjs
-/* 由于不知道传入参数和内置参数的名称，这里临时用
-var_arg和in_var命名来临时代表这传入参数和内置参数*/
+/* 由于无法知道传入参数和内置参数的名称，这里临时用
+var_arg和in_var命名来临时代表部分传入参数和内置参数*/
+
+{
+	var v0 = "wincorner";
+	SystemConfig.WindowCornerPreferenceMenu = [
+		%["name"=>"Win11CornerShapeDefaultMenuItem", "caption"=>"システム規定値", "func"=>v0, "group"=>1, "value"=>0],
+		%["caption"=>"-"],
+		%["name"=>"Win11CornerShapeDoNotRoundMenuItem", "caption"=>"丸めない", "func"=>v0, "group"=>1, "value"=>1],
+		%["name"=>"Win11CornerShapeRoundMenuItem", "caption"=>"丸める", "func"=>v0, "group"=>1, "value"=>2],
+		%["name"=>"Win11CornerShapeSmallRoundMenuItem", "caption"=>"丸める（小径）", "func"=>v0, "group"=>1, "value"=>3]
+	];
+}
 
 function UpdateWindowCornerPreferenceMenu(var_arg1,var_arg2) {
 	if(var_arg1===void)
@@ -28,23 +39,12 @@ function UpdateWindowCornerPreferenceMenu(var_arg1,var_arg2) {
 	}
 }
 
-{
-var v0 = "wincorner";
-SystemConfig.WindowCornerPreferenceMenu = [
-	%["name"=>"Win11CornerShapeDefaultMenuItem", "caption"=>"", "func"=>v0, "group"=>1, "value"=>0],
-	%["caption"=>"-"],
-	%["name"=>"Win11CornerShapeDoNotRoundMenuItem", "caption"=>"", "func"=>v0, "group"=>1, "value"=>1],
-	%["name"=>"Win11CornerShapeRoundMenuItem", "caption"=>"", "func"=>v0, "group"=>1, "value"=>2],
-	%["name"=>"Win11CornerShapeSmallRoundMenuItem", "caption"=>"", "func"=>v0, "group"=>1, "value"=>3]
-];
-}
-
 if(typeof Window.setWindowCornerPreference=="Object"){
 	addKagHookCallback(
 		"onSetExSystemMenu",
 		function (var_arg1){
 			var in_var1 = SystemConfig.WindowCornerPreferenceMenu;
-			var_arg1.push(%["caption"=>"", "name"=>"Win11CornerShapeMenu", "children"=> in_var1]);
+			var_arg1.push(%["caption"=>"ウィンドウ角の形状", "name"=>"Win11CornerShapeMenu", "children"=> in_var1]);
 		},
 		0
 	);
