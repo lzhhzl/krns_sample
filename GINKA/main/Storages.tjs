@@ -1,0 +1,69 @@
+/*
+検索パスの追加登録方法：
+ setupSubFolders([ サブフォルダ名, ... ]);
+  サブフォルダ名：data/以下のフォルダ名。サブサブフォルダ以下は"/"で区切る
+ */
+
+addArchive("steam");
+addArchive("bgimage2");
+Storages.addAutoToolsPath("engine/steam/") if (debugWindowEnabled && typeof global.developMode != "undefined" && developMode);
+
+setupSubFolders([
+	/* 記述例：
+	"scenario/part1"
+	"scenario/part2"
+
+	"fgimage/chara1",
+	"fgimage/chara2",
+
+	"image/cutin",
+	"image/effect/type1",
+	"image/effect/type2",
+
+	"voice/chara1",
+	"voice/chara2",
+	 ここまでコメント */
+
+	//背景
+	"bgimage/anim",
+	"bgimage/bg2",
+	"bgimage/bg2/l",
+	"bgimage/mask",
+	"bgimage/l",
+	"bgimage/cut",
+	"bgimage/cut/l",
+	"bgimage/cut/s",
+
+	//EVG
+	"evimage/l",
+
+	//漫符
+	"image/anim",
+	"image/clip",
+	"image/musen",
+	"image/amv",
+	"image/eyecatch",
+
+	//曲名
+	"image/bgmtitle/en",
+	"image/bgmtitle/jp",
+	"image/bgmtitle/cn",
+
+	//ワイプ
+	"rule/old",
+
+	//共通フォルダ設定
+	"voice/system",
+
+	]);
+
+if (debugWindowEnabled && !inXP3archivePacked)
+{
+	// 再帰フォルダ追加
+	addAutoPathRecursive(System.exePath+"scenario/", false, tkdlVerbose);
+}
+
+var AppendDataConfig = %[
+	"patch_append1"  => [ "cr_data", "cr_event" ],
+	];
+KAGLoadScript("append_init.tjs");
