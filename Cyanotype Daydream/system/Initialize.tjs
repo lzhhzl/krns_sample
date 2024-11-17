@@ -1,6 +1,9 @@
 // Initialize.tjs - 系统初始化
+// Copyright (C)2001-2008, W.Dee and contributors  改変・配布は自由です
+
 /* 由于无法知道所有传入参数和内置参数的名称，这里临时用
 xxx_arg或xxx_var之类的命名来临时代表部分传入参数和内置参数*/
+
 // ロック区分用
 var lockKey = "";
 
@@ -703,6 +706,9 @@ try {
 	var dll = "wuopus.dll";
 	Plugins.link(dll) if (CanLoadPlugin(dll)) && KAGConfigEnabled("wuOpusEnabled",false);
 } catch {}
+
+//if(Storages.isExistentStorage(System.exePath + "Override2.tjs"))
+//	KAGLoadScript(System.exePath + "Override2.tjs");
 
 /*
 	( デバッグ ) 時間計測
